@@ -44,16 +44,16 @@ namespace ConsoleApp2
             //программа 3
             Console.WriteLine("Напишите число");
             int[] x = new int[11];
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
                 x[i] = Convert.ToInt32(Math.Pow(2, i));
             }
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
                 Console.Write(x[i] + " ");
             }
             Console.WriteLine();
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
                 Console.Write(x[10 - i] + " ");
             }
@@ -63,7 +63,7 @@ namespace ConsoleApp2
         {
             //программа 4
             char[] s = new char[10];
-            for (int i = 0; i <= 10; i += 1)
+            for (int i = 0; i < 10; i += 1)
             {
                 s[i] = (char) (97 + i * 2);
             }
@@ -80,14 +80,16 @@ namespace ConsoleApp2
             int x = 0;
             char c = 'A';
             bool isVowel = true;
-            for (int i = 0; i <= 10; i += 1)
+            for (int i = 0; i < 10; i += 1)
             {
                 while (isVowel)
                 {
                     c = (char)('A' + x);
                     isVowel = "AEIOU".IndexOf(c) >= 0;
+                    x++;
                 }
                 s[i] = c;
+                isVowel = true;
             }
             for (int i = 0; i < 10; i++)
             {
@@ -107,12 +109,12 @@ namespace ConsoleApp2
                 Random rnd = new Random();
                 for (int i = 0; i < n; i++)
                 {
-                    x[i] = rnd.Next();
+                    x[i] = rnd.Next(1, 100);
                     Console.Write(x[i] + " ");
                     if (x[i] < a)
                     {
-                        b = i;
-                        x[i] = a;
+                        b = i + 1;
+                        a = x[i];
                     }
                 }
                 Console.WriteLine();
@@ -134,7 +136,7 @@ namespace ConsoleApp2
                 Random rnd = new Random();
                 for (int i = 0; i < n; i++)
                 {
-                    x[i] = rnd.Next();
+                    x[i] = rnd.Next(1, 100);
                     Console.Write(x[i] + " ");
                 }
                 Console.WriteLine();
@@ -168,13 +170,13 @@ namespace ConsoleApp2
         {
             //программа 8
             char[] s = new char[10];
-            for (int i = 0; i <= 10; i += 1)
+            for (int i = 0; i < 10; i += 1)
             {
                 s[i] = (char)('A' + i);
             }
             char[] c = new char[10];
             s.CopyTo(c, 0);
-            for (int i = 0; i <= 10; i += 1)
+            for (int i = 0; i < 10; i += 1)
             {
                 s[i] = c[9 - i];
             }
@@ -193,13 +195,20 @@ namespace ConsoleApp2
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    x[i, j] = rnd.Next();
+                    x[i, j] = rnd.Next(1, 1000);
                     Console.Write(x[i, j] + " ");
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
             int[,] y = new int[10, 10];
-            x.CopyTo(x, 0);
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    y[i, j] = x[i, j];
+                }
+            }
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
@@ -219,11 +228,12 @@ namespace ConsoleApp2
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    x[i, j] = rnd.Next();
+                    x[i, j] = rnd.Next(1, 100);
                     Console.Write(x[i, j] + " ");
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
             int[,] y = new int[9, 9];
             int a = rnd.Next(0, 9);
             int b = rnd.Next(0, 9);
@@ -237,15 +247,22 @@ namespace ConsoleApp2
                     {
                         if (j != b)
                         {
-                            x[c, d] = rnd.Next();
+                            y[c, d] = x[i, j];
                             d++;
                         }
-                        Console.Write(x[i, j] + " ");
                     }
                     c++;
-                    Console.WriteLine();
                 }
             }
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    Console.Write(y[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
         }
         static int[] dir(int cx, int cy, int dx, int dy, int[,] ma)
         {
@@ -255,7 +272,6 @@ namespace ConsoleApp2
             bool flagborderxpos = cx == 8;
             if (!flagborderxpos)
             {
-                Console.WriteLine(cx+cy+" ");
                 flagborderxpos = ma[cx + 1, cy] == 1;
             }
             bool flagborderypos = cy == 8;
@@ -284,7 +300,7 @@ namespace ConsoleApp2
             }
             if (flagborderyneg && down)
             {
-                directions[0] = -1;
+                directions[0] = 1;
                 directions[1] = 0;
             }
             if (flagborderxneg && left)
@@ -294,7 +310,12 @@ namespace ConsoleApp2
             }
             if (flagborderypos && up)
             {
-                directions[0] = 1;
+                directions[0] = -1;
+                directions[1] = 0;
+            }
+            if (flagborderxneg && flagborderxpos && flagborderyneg && flagborderypos)
+            {
+                directions[0] = 0;
                 directions[1] = 0;
             }
             return directions;
@@ -320,23 +341,23 @@ namespace ConsoleApp2
             while (true)
             {
                 a[x, y] = 1;
-                b[x, y] = n;
+                b[y, x] = n;
                 x += dirx;
                 y += diry;
-                int[] d = dir(x, y, dirx, diry, a);
-                dirx = d[0];
-                diry = d[1];
-                if (x == 4 && y == 4 || n == 80)
+                if (dirx == 0 && diry == 0)
                 {
                     break;
                 }
+                int[] d = dir(x, y, dirx, diry, a);
+                dirx = d[0];
+                diry = d[1];
                 n++;
             }
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    Console.Write(b[i, j] + " ");
+                    Console.Write(b[i, j] + "\t");
                 }
                 Console.WriteLine();
             }
